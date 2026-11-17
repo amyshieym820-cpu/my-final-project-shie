@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0E3B2C">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Green Book">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Film Green Book · Art Department Carbon Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--g:#0E3B2C;--w:#fff;--bg:#DDF3E8;--card:#F8FDFA;--tint:color-mix(in srgb,var(--g) 6%,#fff);--tint2:color-mix(in srgb,var(--g) 12%,#fff);--line:color-mix(in srgb,var(--g) 22%,var(--bg));--mute:color-mix(in srgb,var(--g) 78%,#fff);--font:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--g);font:15px/1.6 var(--font);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+header,main,footer{max-width:1120px;margin:0 auto;padding-left:20px;padding-right:20px}
+header{padding-top:44px;padding-bottom:12px}
+h1{font:700 clamp(32px,5.5vw,52px)/1.05 var(--font);letter-spacing:-.03em;margin:0 0 12px}
+header p{margin:0;color:var(--mute);max-width:58ch}
+main{padding-top:20px;padding-bottom:60px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:28px;align-items:start}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+h2{font:600 20px var(--font);letter-spacing:-.01em;margin:0 0 14px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.g{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.g>label{grid-column:span 2;display:flex;flex-direction:column;font-size:12.5px;color:var(--mute);font-weight:500;position:relative;gap:4px}
+.g>label.w3{grid-column:span 3}.g>label.w6{grid-column:span 6}
+@media(max-width:560px){.g>label,.g>label.w3{grid-column:span 6}}
+input,select{font:inherit;color:var(--g);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-height:40px;width:100%}
+input:focus,select:focus{outline:none;border-color:var(--g);background:var(--w)}
+:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+input:disabled{opacity:.5}
+.sg{position:absolute;top:100%;left:0;right:0;z-index:20;margin:4px 0 0;padding:4px;list-style:none;background:var(--w);border:1px solid var(--g);border-radius:12px;max-height:230px;overflow:auto;box-shadow:0 8px 24px rgba(14,59,44,.15)}
+.sg[hidden]{display:none}
+.sg li{padding:8px 10px;border-radius:8px;cursor:pointer;font-size:13.5px;color:var(--g);line-height:1.4}
+.sg li:hover{background:var(--tint2)}
+.sg li.none{cursor:default;color:var(--mute)}
+.key{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;max-width:560px;font-size:13.5px}
+.key summary{cursor:pointer;font-weight:600}
+.key .kr{display:flex;gap:6px;margin:10px 0 6px}
+.key .kr button{white-space:nowrap}
+.key ol{margin:8px 0 0;padding-left:18px;color:var(--mute);font-size:12.5px}
+.hint{grid-column:span 6;font-size:12.5px;color:var(--mute);min-height:1.2em}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap}
+.mini{font-size:13px;color:var(--mute)}
+.mini b{color:var(--g)}
+button{font:600 14px var(--font);border-radius:999px;border:1px solid var(--g);background:#fff;color:var(--g);padding:8px 16px;cursor:pointer}
+button.add{background:var(--g);color:var(--w);width:100%;padding:13px;font-size:15px}
+button.del{border-color:var(--line);color:var(--mute)}
+a.map{color:var(--g);font-weight:600;font-size:12.5px}
+.panel{background:var(--g);color:var(--w);border-radius:18px;padding:24px}
+.panel .lab{font-size:14px;opacity:.8}
+.big{font:700 clamp(48px,8vw,72px)/1 var(--font);letter-spacing:-.04em;margin:8px 0 14px}
+.big small{font:500 16px var(--font);letter-spacing:0;margin-left:8px;opacity:.8}
+.kv{display:flex;justify-content:space-between;gap:12px;border-top:1px solid rgba(255,255,255,.25);padding:8px 0;font-size:14px}
+.kv span{opacity:.85}.kv b{white-space:nowrap}
+.lvl{margin-top:14px;padding:12px 16px;border-radius:12px;font-weight:600;background:#fff;border:1px solid var(--line)}
+.lvl.high{background:var(--g);color:var(--w);border-color:var(--g)}
+.save{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:14px}
+.save h3{margin:0 0 8px;font:600 16px var(--font)}
+.save ul,.tips ul{margin:0;padding-left:18px}
+.save li,.tips li{margin:4px 0}
+.sec{margin-top:28px}
+.sug{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:10px}
+.sug .d{font-weight:700;background:var(--tint2);border-radius:6px;padding:1px 6px;white-space:nowrap}
+.empty{border:1px dashed var(--line);border-radius:14px;padding:24px;text-align:center;color:var(--mute);margin-bottom:14px}
+.note{font-size:12.5px;color:var(--mute);margin-top:16px}
+footer{padding-bottom:36px}
+.cmp{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.ch{font-size:12.5px;color:var(--mute);margin-bottom:6px}
+.cr{display:grid;grid-template-columns:116px 1fr 72px 80px 86px;gap:8px;align-items:center;width:100%;border:0;border-radius:8px;background:none;padding:6px;font:500 13px var(--font);text-align:left;color:var(--g)}
+.cr:hover{background:var(--tint)}.cr.on{background:var(--tint2);font-weight:700}.cr.far{opacity:.6}
+.cb{height:8px;border-radius:99px;background:var(--tint2);overflow:hidden;display:block}
+.cb i{display:block;height:100%;background:var(--g);border-radius:99px}
+.cv,.cd,.ct{text-align:right;white-space:nowrap}.cd,.ct{color:var(--mute)}
+@media(max-width:560px){.cr{grid-template-columns:1fr 64px 72px}.cb,.ct{display:none}}
+.ac{position:relative}
+.g>div.w6{grid-column:span 6}
+.mode{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.ml{font-size:12.5px;color:var(--mute);font-weight:500;width:100%}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.chip{position:relative;cursor:pointer;display:block}
+.chip input{position:absolute;inset:0;opacity:0;width:100%;height:100%;min-height:0;margin:0;cursor:pointer}
+.chip span{display:block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:600;line-height:1.25;text-align:center;color:var(--g)}
+.chip small{display:block;font-weight:500;font-size:11px;color:var(--mute)}
+.chip input:checked+span{background:var(--g);color:var(--w);border-color:var(--g)}
+.chip input:checked+span small{color:rgba(255,255,255,.8)}
+.chip input:focus-visible+span{outline:2px solid var(--g);outline-offset:2px}
+.rt{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;margin-left:auto;color:var(--g)}
+.rt input{width:auto;min-height:0}
+.mnote{font-size:12.5px;color:var(--mute)}
+.kv[hidden],.gauge[hidden]{display:none}
+.qsec{margin-bottom:34px}
+.qsum{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.qsum div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:12.5px;color:var(--mute)}
+.qsum b{display:block;font-size:20px;color:var(--g);letter-spacing:-.02em;line-height:1.3}
+.qsum input{margin-top:4px}
+@media(max-width:560px){.qsum{grid-template-columns:1fr}}
+button.add.alt{background:#fff;color:var(--g)}
+.gauge{margin:0 0 16px}
+.gb{position:relative;height:10px;border-radius:99px;background:rgba(255,255,255,.2)}
+.gb i{display:block;height:100%;border-radius:99px;background:var(--w)}
+.gb.over i{background:repeating-linear-gradient(135deg,#fff 0 6px,rgba(255,255,255,.45) 6px 12px)}
+.gb u{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--w)}
+.gl{display:flex;justify-content:space-between;font-size:12px;opacity:.85;margin-top:8px}
+.run{display:block;margin-top:4px;font-size:12.5px;color:var(--mute)}
+.run.ok{color:var(--g);font-weight:700}
+.top{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:10px}
+.top p{margin:4px 0 0;font-size:13.5px}
+h3.sub{font:600 16px var(--font);margin:20px 0 10px}
+</style>
+</head>
+<body>
+<header>
+<h1>Film Green Book</h1>
+<p>See how much carbon your art department saves depending on where and how you source props and materials. Enter your art budget quote to get a baseline carbon figure, then add your props. If the total goes over the baseline, you get a step-by-step plan to get back under it.</p>
+<details class="key" id="keybox">
+<summary>Address search settings: <span id="kstat">OpenStreetMap (no Kakao key)</span></summary>
+<div class="kr"><input id="kkey" placeholder="Paste your Kakao JavaScript key" autocomplete="off"><button type="button" id="ksave">Save</button><button type="button" class="del" id="kclear">Clear</button></div>
+<ol><li>In Kakao Developers, create an app and register this site's address under Platform, Web.</li><li>Turn on Kakao Map in the product settings.</li><li>Copy the JavaScript key and paste it above. It is stored only in this browser.</li></ol>
+</details>
+</header>
+<main>
+<section aria-label="Props list">
+<div class="qsec" aria-label="Art budget quote">
+<h2>Art budget quote</h2>
+<p class="mini" style="margin:-6px 0 14px">Enter each line of the quote. Amounts are converted into a baseline carbon figure using spend-based factors (kg CO₂e per ₩10,000). Your props below are compared against it.</p>
+<div id="qitems"></div>
+<button class="add alt" id="qadd">Add a quote line</button>
+<div class="qsum">
+<div>Quote total<b id="qamt">₩0</b></div>
+<div>Baseline carbon<b id="qbase">0 kg</b></div>
+<div><label for="tgt">Reduction target (%)</label><input id="tgt" type="number" min="0" max="90" step="1" value="0"></div>
+</div>
+</div>
+<h2>Props and materials</h2>
+<div id="items"></div>
+<button class="add" id="add">Add an item</button>
+<p class="note">Type an address up to the neighborhood (e.g. 서울 강남구 역삼동) in Origin and Destination and pick a suggestion. It works without any external service. Seoul neighborhoods are built in; elsewhere the district or city center is used. The detail field takes building, floor, or room. Then choose how you travel: the comparison shows the carbon for every mode, and clicking one applies it. The road distance is filled in automatically and you can still edit it. Use the detail field for building, floor, or room. If you press Enter or click away without picking, the address is used as typed. With a Kakao key set, results come from Kakao Maps.</p>
+</section>
+<aside aria-label="Results">
+<div class="panel">
+<div class="lab">Total carbon emissions for all purchases</div>
+<div class="big"><span id="total">0</span><small>kg CO₂e</small></div>
+<div class="gauge" id="gauge" hidden><div class="gb" id="gb"><i id="gfill"></i><u id="gmark"></u></div><div class="gl"><span>Props total</span><span id="glim"></span></div></div>
+<div class="kv" id="qrow" hidden><span>Baseline from art quote</span><b id="qb">0</b></div>
+<div class="kv" id="lrow" hidden><span>Limit after reduction target</span><b id="lim">0</b></div>
+<div class="kv"><span>If every item were bought new on Coupang, shipped individually</span><b id="base">0</b></div>
+<div class="kv"><span>Production</span><b id="prod">0</b></div>
+<div class="kv"><span>Packaging, transport, and travel</span><b id="trans">0</b></div>
+<div class="kv"><span>of which from distance (origin → destination)</span><b id="dist">0</b></div>
+</div>
+<div id="lvl" class="lvl"></div>
+<div class="save" id="save"></div>
+</aside>
+<section id="sugwrap" class="sec" style="grid-column:1/-1"></section>
+</main>
+<footer class="note">
+All factors are simplified estimates based on public averages. For production-grade numbers, edit the <code>CFG</code> block at the top of the script. The quote baseline uses spend-based factors (<code>CFG.spend</code>, kg CO₂e per ₩10,000), so it is a rough reference point rather than a measured figure. The meal and water equivalents are comparison metrics, not actual quantities delivered.
+</footer>
+
+<script>
+/* ===== Kakao Maps JavaScript key =====
+   Paste your key between the quotes. Leave empty to use the OpenStreetMap fallback.
+   This key is meant for browsers and is protected by the web domain you register at Kakao Developers. */
+const KAKAO_JS_KEY='';
+/* ===== Settings: edit factors here (all estimates) ===== */
+const CFG={
+ // category: [new-product production kgCO2e/kg, water footprint L/kg]
+ cat:{'Wood / plywood':[0.9,50],'Fabric / costume':[15,6000],'Plastic':[3,200],'Metal':[4,300],'Paper / cardboard':[1.3,400],'Glass / ceramic':[1.2,30],'Furniture / finished goods':[2.5,300],'Electronics':[20,1500],'Paint / chemicals':[3,100],'Other':[2,200]},
+ // method: mult = production emissions vs. buying new, pk = packaging + delivery kgCO2e per parcel
+ method:{
+  coupang:{n:'Coupang',on:1,mult:1,pk:0.55},
+  naver:{n:'Naver Shopping',on:1,mult:1,pk:0.7},
+  daiso:{n:'Daiso store',on:0,mult:1},
+  danggeun:{n:'Danggeun (used)',on:0,mult:0.05},
+  rental:{n:'Prop rental house',on:0,mult:0.03},
+  reuse:{n:'Reuse from stock / scrap',on:0,mult:0.01}
+ },
+ mode:{walk:['Walk',0,5],bicycle:['Bicycle',0,15],transit:['Public transit',0.07,25],ev:['Electric car',0.06,35],car:['Car (gasoline)',0.19,35],van:['Van / truck',0.28,30]}, // [name, kgCO2e per km, average km/h]
+ maxkm:{walk:3,bicycle:10}, // longest one-way distance suggested for these modes
+ truck:0.00015, // freight kgCO2e per kg-km
+ road:1.3,      // straight line to road distance (fallback if routing fails)
+ meal:2.0, drink:2, tree:6.6, mid:20, high:50,
+ // spend-based baseline: kgCO2e per 10,000 KRW of quoted spend (rough estimates)
+ spend:{'Wood / plywood':5,'Fabric / costume':8,'Plastic':6,'Metal':8,'Paper / cardboard':5,'Glass / ceramic':5,'Furniture / finished goods':4,'Electronics':3,'Paint / chemicals':6,'Other':4}
+};
+const TIPS={'Wood / plywood':'Use reclaimed lumber or rental flats, and plan cuts to reduce offcuts.','Fabric / costume':'Rent or reuse fabric stock, use remnants, and avoid buying spare yardage.','Plastic':'Swap for rented or reused pieces, or for wood and paper alternatives.','Metal':'Rent or reuse frames and hardware instead of buying new.','Paper / cardboard':'Print only what appears on camera, and use recycled stock.','Glass / ceramic':'Rent from prop houses, since these are low carbon per kg but easy to over-buy.','Furniture / finished goods':'Rent or buy used. Furniture is where reuse saves the most.','Electronics':'Rent working units or use non-functional replicas for background shots.','Paint / chemicals':'Mix only what you need and use low-VOC, water-based paint.','Other':'Check whether a rental or reused version exists.'};
+const NOREUSE=['Paint / chemicals'];
+/* ===== Helpers ===== */
+const $=s=>document.querySelector(s),f1=n=>(Math.round(n*10)/10).toLocaleString('en-US'),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const newItem=()=>({name:'',cat:'Wood / plywood',w:1,q:1,method:'coupang',ship:'single',b:1,mode:'transit',rt:true,o:'',od:'',d:'',dd:'',oc:null,dc:null,km:0,hint:''});
+let items=[newItem()];
+const newQ=()=>({name:'',cat:'Wood / plywood',amt:0});
+let quote=[newQ()],target=0;
+const won=n=>'₩'+Math.round(n).toLocaleString('ko-KR');
+const qBase=q=>q.amt/10000*CFG.spend[q.cat];
+function hv(a,b){const r=x=>x*Math.PI/180,dl=r(b[0]-a[0]),dn=r(b[1]-a[1]),h=Math.sin(dl/2)**2+Math.cos(r(a[0]))*Math.cos(r(b[0]))*Math.sin(dn/2)**2;return 2*6371*Math.asin(Math.sqrt(h))}
+/* ===== Calculation ===== */
+function calc(it,ov={}){
+ const k=ov.method||it.method,m=CFG.method[k],c=CFG.cat[it.cat],w=it.w*it.q,km=it.km||0;
+ const prod=w*c[0]*m.mult;let tr,pkg=0;
+ if(m.on){const b=(ov.ship||it.ship)==='bundle'?Math.max(1,ov.b||it.b):1;pkg=Math.ceil(it.q/b)*m.pk;tr=pkg+w*km*CFG.truck}
+ else tr=km*(it.rt===false?1:2)*CFG.mode[ov.mode||it.mode][1]+(k==='daiso'?w*150*CFG.truck:0);
+ return{prod,tr,pkg,dist:tr-pkg,t:prod+tr,water:w*c[1]*(1-m.mult)}}
+const base=it=>calc(it,{method:'coupang',ship:'single'});
+const dur=h=>h<1?Math.max(1,Math.round(h*60))+' min':Math.floor(h)+'h '+Math.round((h%1)*60)+'m';
+const okModes=it=>Object.keys(CFG.mode).filter(k=>CFG.maxkm[k]==null||it.km<=CFG.maxkm[k]);
+const lab2=(k,sh,md)=>label(k,sh)+(CFG.method[k].on||!md?'':' ('+CFG.mode[md][0].toLowerCase()+')');
+function cmpHTML(it){
+ if(!(it.km>0))return'<div class="mnote">Set origin and destination to compare the carbon of each travel mode.</div>';
+ const rt=it.rt!==false?2:1,tk=it.km*rt,cur=CFG.mode[it.mode][1]*tk,L=Object.entries(CFG.mode).map(([k,x])=>({k,n:x[0],e:x[1]*tk,h:tk/x[2],far:CFG.maxkm[k]!=null&&it.km>CFG.maxkm[k]})),mx=Math.max(...L.map(x=>x.e),0.01);
+ return`<div class="ch">Travel carbon for ${f1(tk)} km (${rt===2?'round trip':'one way'}). Click a mode to apply it.</div>`+L.map(x=>{const d=x.e-cur;
+  return`<button type="button" class="cr${x.k===it.mode?' on':''}${x.far?' far':''}" data-cm="${x.k}"><span class="cn">${x.n}</span><span class="cb"><i style="width:${x.e/mx*100}%"></i></span><span class="cv">${f1(x.e)} kg</span><span class="cd">${x.k===it.mode?'selected':(d<0?'−':'+')+f1(Math.abs(d))+' kg'}</span><span class="ct">${dur(x.h)}${x.far?' · far':''}</span></button>`}).join('')}
+const label=(k,sh)=>CFG.method[k].n+(CFG.method[k].on?(sh==='bundle'?', bundled':', shipped individually'):'');
+/* ===== Address search: Kakao Maps (if key set) with OpenStreetMap fallback ===== */
+const KAKAO={ok:false};
+const KEYNAME='fgb_kakao_key';
+function getKey(){try{return localStorage.getItem(KEYNAME)||KAKAO_JS_KEY}catch(e){return KAKAO_JS_KEY}}
+function setStat(t){$('#kstat').textContent=t}
+function loadKakao(){
+ const key=getKey();$('#kkey').value=key;
+ if(!key){setStat('OpenStreetMap (no Kakao key)');return}
+ setStat('Connecting to Kakao Maps…');
+ const sc=document.createElement('script');
+ sc.src='https://dapi.kakao.com/v2/maps/sdk.js?appkey='+encodeURIComponent(key)+'&libraries=services&autoload=false';
+ sc.onload=()=>kakao.maps.load(()=>{KAKAO.places=new kakao.maps.services.Places();KAKAO.geo=new kakao.maps.services.Geocoder();KAKAO.ok=true;setStat('Kakao Maps active')});
+ sc.onerror=()=>setStat('Kakao failed to load, using OpenStreetMap. Check the key and registered domain.');
+ document.head.appendChild(sc);
+ setTimeout(()=>{if(!KAKAO.ok)setStat('Kakao not responding, using OpenStreetMap. Check the key and registered domain.')},8000)}
+const SIDO={'서울':[37.5665,126.978],'부산':[35.1796,129.0756],'대구':[35.8714,128.6014],'인천':[37.4563,126.7052],'광주':[35.1595,126.8526],'대전':[36.3504,127.3845],'울산':[35.5384,129.3114],'세종':[36.48,127.289],'경기':[37.275,127.0094],'강원':[37.8813,127.7298],'충북':[36.6357,127.4912],'충남':[36.6588,126.6728],'전북':[35.8203,127.1088],'전남':[34.8161,126.4629],'경북':[36.576,128.5056],'경남':[35.2383,128.6925],'제주':[33.4996,126.5312]};
+const sidoFB=t=>SIDO[String(t||'').trim().slice(0,2)]||null;
+const GAZ_SRC={
+'서울|서울특별시':'강남구:37.517:127.047;강동구:37.530:127.124;강북구:37.640:127.011;강서구:37.551:126.850;관악구:37.478:126.952;광진구:37.538:127.082;구로구:37.495:126.887;금천구:37.457:126.895;노원구:37.654:127.056;도봉구:37.669:127.047;동대문구:37.574:127.040;동작구:37.512:126.939;마포구:37.566:126.902;서대문구:37.579:126.937;서초구:37.484:127.033;성동구:37.563:127.037;성북구:37.589:127.017;송파구:37.515:127.106;양천구:37.517:126.867;영등포구:37.526:126.896;용산구:37.532:126.990;은평구:37.603:126.929;종로구:37.573:126.979;중구:37.564:126.998;중랑구:37.606:127.093',
+'부산|부산광역시':'강서구:35.212:128.981;금정구:35.243:129.092;기장군:35.245:129.222;남구:35.136:129.084;동구:35.129:129.045;동래구:35.205:129.084;부산진구:35.163:129.053;북구:35.197:128.990;사상구:35.153:128.991;사하구:35.104:128.975;서구:35.097:129.024;수영구:35.146:129.113;연제구:35.176:129.082;영도구:35.091:129.068;중구:35.106:129.032;해운대구:35.163:129.164',
+'대구|대구광역시':'남구:35.846:128.597;달서구:35.830:128.533;달성군:35.775:128.431;동구:35.887:128.636;북구:35.886:128.583;서구:35.872:128.559;수성구:35.858:128.631;중구:35.869:128.606;군위군:36.239:128.573',
+'인천|인천광역시':'강화군:37.747:126.488;계양구:37.537:126.738;남동구:37.447:126.731;동구:37.474:126.643;미추홀구:37.464:126.650;부평구:37.507:126.722;서구:37.545:126.676;연수구:37.410:126.678;옹진군:37.446:126.637;중구:37.474:126.621',
+'광주|광주광역시':'광산구:35.140:126.794;남구:35.133:126.903;동구:35.146:126.923;북구:35.174:126.912;서구:35.152:126.890',
+'대전|대전광역시':'대덕구:36.347:127.415;동구:36.312:127.455;서구:36.355:127.384;유성구:36.362:127.356;중구:36.326:127.421',
+'울산|울산광역시':'남구:35.544:129.330;동구:35.505:129.417;북구:35.583:129.361;울주군:35.522:129.243;중구:35.569:129.333',
+'세종|세종특별자치시':'세종시:36.480:127.289',
+'경기|경기도':'수원시:37.263:127.029;수원시 영통구:37.259:127.046;수원시 장안구:37.304:127.010;수원시 팔달구:37.282:127.020;수원시 권선구:37.257:126.972;성남시:37.420:127.127;성남시 분당구:37.383:127.119;성남시 수정구:37.450:127.146;성남시 중원구:37.430:127.137;의정부시:37.738:127.034;안양시:37.394:126.957;안양시 만안구:37.386:126.933;안양시 동안구:37.392:126.952;부천시:37.504:126.766;광명시:37.478:126.865;평택시:36.992:127.113;동두천시:37.904:127.060;안산시:37.322:126.831;안산시 상록구:37.301:126.847;안산시 단원구:37.318:126.808;고양시:37.658:126.832;고양시 덕양구:37.637:126.832;고양시 일산동구:37.659:126.774;고양시 일산서구:37.676:126.750;과천시:37.429:126.988;구리시:37.594:127.130;남양주시:37.636:127.217;오산시:37.150:127.077;시흥시:37.380:126.803;군포시:37.362:126.935;의왕시:37.345:126.968;하남시:37.539:127.215;용인시:37.241:127.178;용인시 처인구:37.234:127.202;용인시 기흥구:37.280:127.115;용인시 수지구:37.322:127.098;파주시:37.760:126.780;이천시:37.272:127.435;안성시:37.008:127.280;김포시:37.615:126.716;화성시:37.199:126.831;광주시:37.430:127.256;양주시:37.785:127.046;포천시:37.895:127.200;여주시:37.298:127.637;연천군:38.096:127.075;가평군:37.831:127.510;양평군:37.491:127.488',
+'강원|강원도 강원특별자치도':'춘천시:37.881:127.730;원주시:37.342:127.920;강릉시:37.752:128.876;동해시:37.525:129.114;태백시:37.164:128.986;속초시:38.207:128.592;삼척시:37.450:129.165;홍천군:37.697:127.888;횡성군:37.492:127.985;영월군:37.184:128.462;평창군:37.371:128.390;정선군:37.380:128.661;철원군:38.147:127.313;화천군:38.106:127.708;양구군:38.110:127.990;인제군:38.070:128.170;고성군:38.380:128.468;양양군:38.075:128.619',
+'충북|충청북도':'청주시:36.642:127.489;충주시:36.991:127.926;제천시:37.132:128.191;보은군:36.489:127.729;옥천군:36.306:127.571;영동군:36.175:127.783;증평군:36.785:127.581;진천군:36.855:127.436;괴산군:36.815:127.787;음성군:36.940:127.690;단양군:36.985:128.366',
+'충남|충청남도':'천안시:36.815:127.114;공주시:36.447:127.119;보령시:36.333:126.613;아산시:36.790:127.002;서산시:36.785:126.450;논산시:36.187:127.099;계룡시:36.274:127.249;당진시:36.890:126.646;금산군:36.109:127.488;부여군:36.276:126.910;서천군:36.081:126.691;청양군:36.459:126.802;홍성군:36.601:126.661;예산군:36.683:126.850;태안군:36.746:126.298',
+'전북|전라북도 전북특별자치도':'전주시:35.824:127.148;군산시:35.968:126.737;익산시:35.948:126.958;정읍시:35.570:126.856;남원시:35.416:127.390;김제시:35.804:126.881;완주군:35.904:127.162;진안군:35.792:127.425;무주군:36.007:127.661;장수군:35.647:127.521;임실군:35.617:127.289;순창군:35.375:127.137;고창군:35.436:126.702;부안군:35.732:126.733',
+'전남|전라남도':'목포시:34.812:126.392;여수시:34.760:127.662;순천시:34.951:127.487;나주시:35.016:126.711;광양시:34.941:127.696;담양군:35.321:126.988;곡성군:35.282:127.292;구례군:35.202:127.463;고흥군:34.611:127.285;보성군:34.771:127.080;화순군:35.065:126.986;장흥군:34.682:126.907;강진군:34.642:126.767;해남군:34.573:126.599;영암군:34.800:126.697;무안군:34.990:126.482;함평군:35.066:126.517;영광군:35.277:126.512;장성군:35.302:126.785;완도군:34.311:126.755;진도군:34.487:126.263;신안군:34.833:126.351',
+'경북|경상북도':'포항시:36.019:129.343;경주시:35.856:129.225;김천시:36.140:128.114;안동시:36.568:128.730;구미시:36.120:128.344;영주시:36.806:128.624;영천시:35.973:128.939;상주시:36.411:128.159;문경시:36.586:128.187;경산시:35.825:128.742;의성군:36.353:128.697;청송군:36.436:129.057;영양군:36.667:129.112;영덕군:36.415:129.366;청도군:35.647:128.734;고령군:35.727:128.263;성주군:35.919:128.283;칠곡군:35.995:128.402;예천군:36.658:128.452;봉화군:36.893:128.732;울진군:36.993:129.401;울릉군:37.484:130.906',
+'경남|경상남도':'창원시:35.228:128.681;진주시:35.180:128.108;통영시:34.854:128.433;사천시:35.003:128.064;김해시:35.228:128.889;밀양시:35.504:128.746;거제시:34.881:128.621;양산시:35.335:129.037;의령군:35.322:128.262;함안군:35.272:128.406;창녕군:35.544:128.492;고성군:34.973:128.323;남해군:34.838:127.892;하동군:35.067:127.751;산청군:35.416:127.874;함양군:35.520:127.725;거창군:35.686:127.909;합천군:35.567:128.166',
+'제주|제주특별자치도':'제주시:33.500:126.531;서귀포시:33.254:126.560'
+};
+// Film-art sourcing spots: name:lat:lon:area (searchable by name)
+const GAZ_SPOTS='을지로 조명·철물 상가:37.566:126.992:서울 중구;방산시장:37.569:126.998:서울 중구;동대문 원단시장:37.570:127.007:서울 종로구;남대문시장:37.559:126.977:서울 중구;문래동 철공소 골목:37.518:126.895:서울 영등포구;성수동:37.544:127.056:서울 성동구;남양주종합촬영소:37.554:127.298:경기 남양주시;영종도:37.492:126.493:인천 중구';
+const GAZ=[];
+Object.entries(GAZ_SRC).forEach(([h,list])=>{const [sh,full]=h.split('|');
+ GAZ.push({label:sh,hay:sh+' '+full,lat:(SIDO[sh]||[0,0])[0],lon:(SIDO[sh]||[0,0])[1]});
+ list.split(';').forEach(e=>{const [n,la,lo]=e.split(':');GAZ.push({label:sh+' '+n,hay:sh+' '+full+' '+n,lat:+la,lon:+lo})})});
+GAZ_SPOTS.split(';').forEach(e=>{const [n,la,lo,a]=e.split(':');GAZ.push({label:n+' ('+a+')',hay:n+' '+a,lat:+la,lon:+lo})});
+const DONG_SRC={
+'서울 강남구':'역삼동:37.500:127.036;삼성동:37.514:127.063;논현동:37.511:127.028;청담동:37.524:127.047;대치동:37.495:127.062;신사동:37.524:127.023;압구정동:37.527:127.028;개포동:37.480:127.052;도곡동:37.488:127.046',
+'서울 송파구':'잠실동:37.513:127.100;문정동:37.486:127.123;가락동:37.496:127.118;방이동:37.511:127.126;석촌동:37.504:127.106',
+'서울 서초구':'서초동:37.483:127.016;반포동:37.504:126.997;방배동:37.481:126.997;양재동:37.470:127.040;잠원동:37.513:127.012',
+'서울 성동구':'성수동:37.544:127.056;행당동:37.558:127.036;금호동:37.547:127.020;옥수동:37.540:127.017',
+'서울 광진구':'화양동:37.546:127.071;자양동:37.534:127.083;구의동:37.538:127.093',
+'서울 마포구':'합정동:37.549:126.914;상암동:37.577:126.891;서교동:37.553:126.922;공덕동:37.544:126.951;망원동:37.556:126.906;연남동:37.562:126.925;상수동:37.548:126.923',
+'서울 영등포구':'여의도동:37.522:126.924;문래동:37.518:126.895;당산동:37.534:126.903;영등포동:37.516:126.907',
+'서울 용산구':'이태원동:37.534:126.994;한남동:37.534:127.002;한강로동:37.530:126.965;후암동:37.550:126.980',
+'서울 종로구':'사직동:37.575:126.969;삼청동:37.585:126.982;혜화동:37.586:127.001;창신동:37.575:127.013;예지동:37.570:126.999;평창동:37.610:126.972',
+'서울 중구':'명동:37.563:126.985;충무로동:37.561:126.994;을지로동:37.566:126.992;회현동:37.558:126.979;신당동:37.565:127.017;황학동:37.571:127.020;장충동:37.559:127.005',
+'서울 동대문구':'청량리동:37.580:127.047;장안동:37.567:127.070;휘경동:37.589:127.063;답십리동:37.567:127.052;제기동:37.578:127.035',
+'서울 중랑구':'상봉동:37.597:127.094;망우동:37.599:127.100;면목동:37.580:127.087',
+'서울 성북구':'길음동:37.603:127.025;돈암동:37.595:127.017;정릉동:37.610:127.008;안암동:37.586:127.030',
+'서울 강북구':'수유동:37.639:127.019;미아동:37.626:127.026;번동:37.628:127.039',
+'서울 도봉구':'창동:37.653:127.047;방학동:37.668:127.039;쌍문동:37.648:127.034',
+'서울 노원구':'상계동:37.659:127.067;중계동:37.644:127.075;공릉동:37.626:127.073;하계동:37.637:127.069',
+'서울 은평구':'불광동:37.610:126.930;응암동:37.598:126.917;녹번동:37.600:126.935;진관동:37.637:126.920',
+'서울 서대문구':'신촌동:37.559:126.942;연희동:37.572:126.934;홍은동:37.589:126.940;북가좌동:37.578:126.912',
+'서울 강서구':'마곡동:37.559:126.833;화곡동:37.541:126.849;가양동:37.566:126.855;등촌동:37.551:126.865;방화동:37.570:126.810',
+'서울 양천구':'목동:37.527:126.875;신정동:37.517:126.857;신월동:37.526:126.832',
+'서울 구로구':'구로동:37.495:126.887;신도림동:37.508:126.890;개봉동:37.491:126.855;고척동:37.502:126.861',
+'서울 금천구':'가산동:37.478:126.882;독산동:37.467:126.899;시흥동:37.449:126.903',
+'서울 관악구':'신림동:37.484:126.929;봉천동:37.480:126.953;남현동:37.475:126.980',
+'서울 동작구':'노량진동:37.513:126.942;사당동:37.477:126.981;흑석동:37.508:126.963;상도동:37.502:126.947',
+'서울 강동구':'천호동:37.538:127.124;길동:37.538:127.140;둔촌동:37.527:127.136;고덕동:37.555:127.154;암사동:37.550:127.128'
+};
+Object.entries(DONG_SRC).forEach(([d,list])=>{const base=GAZ.find(g=>g.label===d);list.split(';').forEach(e=>{const [n,la,lo]=e.split(':');GAZ.push({label:d+' '+n,hay:(base?base.hay:d)+' '+n,lat:+la,lon:+lo,dong:1})})});
+function gazSuggest(q){
+ const loc=gazSearch(q),tok=String(q).trim().split(/\s+/).find(x=>x.length>=2&&/[동읍면리]$/.test(x)&&!loc.some(l=>l.label.includes(x)));
+ if(tok&&loc.length){const b=loc.find(l=>l.approx)||loc[0];loc.unshift({label:b.label+' '+tok,sub:'Neighborhood not in the built-in list. The district center is used for distance.',lat:b.lat,lon:b.lon,approx:true})}
+ return loc}
+function gazSearch(q){
+ const t=String(q||'').toLowerCase().split(/\s+/).filter(x=>x.length>=2);if(!t.length)return[];
+ return GAZ.map(g=>({g,n:t.filter(x=>g.hay.toLowerCase().includes(x)).length})).filter(x=>x.n>0)
+  .sort((a,b)=>b.n-a.n||a.g.hay.length-b.g.hay.length).slice(0,8)
+  .map(x=>({label:x.g.label,sub:x.g.dong?'Neighborhood (동) location':'District-level location (city / county center)',lat:x.g.lat,lon:x.g.lon,approx:!x.g.dong}))}
+
+function tf(u){const c=new AbortController();setTimeout(()=>c.abort(),6000);return fetch(u,{signal:c.signal})}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const kOK=()=>kakao.maps.services.Status.OK;
+function kSearch(q){return new Promise(res=>{
+ KAKAO.places.keywordSearch(q,(d,st)=>{
+  if(st===kOK())return res(d.map(p=>({label:p.place_name,sub:p.road_address_name||p.address_name,lat:+p.y,lon:+p.x})));
+  KAKAO.geo.addressSearch(q,(d2,st2)=>res(st2===kOK()?d2.map(p=>({label:p.address?[p.address.region_1depth_name,p.address.region_2depth_name,p.address.region_3depth_name].filter(Boolean).join(' '):p.address_name,sub:p.address_name,lat:+p.y,lon:+p.x})):[]))},{size:5})})}
+const uniq=a=>a.filter((p,n)=>a.findIndex(q=>q.label===p.label)===n);
+async function nSearch(q,limit=5){
+ const r=await tf('https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit='+limit+'&countrycodes=kr&accept-language=ko,en&q='+encodeURIComponent(q)),j=await r.json();
+ return uniq(j.map(p=>{const a=p.address||{},parts=[a.state||a.province||a.city,a.borough||a.city_district||a.county||(a.state?a.city:''),a.suburb||a.quarter||a.neighbourhood||a.village].filter((x,n,r)=>x&&r.indexOf(x)===n);
+  return{label:parts.length>=2?parts.join(' '):p.display_name.split(', ').slice(0,3).join(', '),sub:p.display_name,lat:+p.lat,lon:+p.lon}}))}
+async function pSearch(q,limit=5){
+ const r=await tf('https://photon.komoot.io/api/?limit='+limit+'&bbox=124.5,33,131.9,38.7&q='+encodeURIComponent(q)),j=await r.json();
+ return j.features.map(f=>{const p=f.properties,c=f.geometry.coordinates,st=p.street?(p.housenumber?p.street+' '+p.housenumber:p.street):'';
+  const parts=[p.name,st,p.district||p.locality,p.city||p.county,p.state].filter((x,n,a)=>x&&a.indexOf(x)===n);
+  return{label:parts.slice(0,3).join(', '),sub:parts.join(', '),lat:c[1],lon:c[0]}})}
+async function osmSearch(q,limit=5){
+ let ok=false,r=[];
+ try{r=await nSearch(q,limit);ok=true}catch(e){}
+ if(!r.length){try{r=await pSearch(q,limit);ok=true}catch(e){}}
+ if(!r.length&&!ok)throw new Error('network');
+ return r}
+const searchPlaces=q=>KAKAO.ok?kSearch(q):osmSearch(q);
+async function locate(cands){
+ for(let n=0;n<cands.length;n++){const q=cands[n];
+  try{let r=[];
+   if(KAKAO.ok){
+    r=await new Promise(res=>KAKAO.geo.addressSearch(q,(d,st)=>res(st===kOK()?d:[])));
+    if(r.length)return[+r[0].y,+r[0].x];
+    r=await kSearch(q)}
+   else{if(n)await sleep(1100);r=await osmSearch(q,1)}
+   if(r.length)return[r[0].lat,r[0].lon]}catch(e){if(!KAKAO.ok)return null}}
+ return null}
+const timers={};
+function renderSug(ul,list,q){ul._r=list;ul._q=q;
+ ul.innerHTML=list.map((p,n)=>`<li data-n="${n}"><b>${esc(p.label)}</b><br><span class="mini">${esc(p.sub||'')}</span></li>`).join('')
+  +`<li data-raw="1"><b>Use “${esc(q)}” as typed</b><br><span class="mini">Keep exactly what you typed. The nearest known area is used for the distance.</span></li>`;ul.hidden=false}
+function search(i,k,row){
+ const key=i+k,q=items[i][k].trim(),ul=row.querySelector(`[data-sg="${k}"]`),h=row.querySelector('[data-hint]');clearTimeout(timers[key]);
+ if(q.length<1){ul.hidden=true;return}
+ const loc=gazSuggest(q);renderSug(ul,loc,q);h.textContent='';
+ timers[key]=setTimeout(async()=>{
+  if(!items[i]||items[i][k].trim()!==q)return;
+  let j=[];try{j=await searchPlaces(q)}catch(e){}
+  if(!items[i]||items[i][k].trim()!==q||ul.hidden)return;
+  if(j.length)renderSug(ul,j.concat(loc),q)},KAKAO.ok?300:700)}
+async function route(i,row){
+ const it=items[i],h=row.querySelector('[data-hint]');
+ if(!it.oc||!it.dc){h.textContent='';return}
+ h.textContent='Calculating distance…';
+ try{const [a,b]=[it.oc,it.dc],r=await tf(`https://router.project-osrm.org/route/v1/driving/${a[1]},${a[0]};${b[1]},${b[0]}?overview=false`);
+  const j=await r.json();it.km=Math.round(j.routes[0].distance/100)/10;it.hint='Road distance by OSRM'+(it.ao||it.ad?'. Based on district centers, so edit the distance if you know the exact one.':'');}
+ catch(e){it.km=Math.round(hv(it.oc,it.dc)*CFG.road*10)/10;it.hint='Estimated from straight-line distance × '+CFG.road+(it.ao||it.ad?' (based on district centers)':'')}
+ if((it.ao||it.ad)&&it.km<1)it.hint+=' Both points are in the same area, so enter the distance manually.';h.textContent=it.hint;row.querySelector('[data-k=km]').value=it.km;mapLink(i);update()}
+function addrCands(t){t=String(t||'').trim();const a=t.replace(/\([^)]*\)/g,'').trim(),b=a.replace(/\s+(지하\s*)?\d+\s*(층|호|동)\b.*$/,'').trim(),w=b.split(/\s+/);
+ return[t,a,b,w.slice(0,4).join(' '),w.slice(0,2).join(' ')].filter((x,n,r)=>x&&r.indexOf(x)===n)}
+async function geocode(i,k,cands){const orig=cands[0],txt=items[i]&&items[i][k];cands=[...new Set(cands.flatMap(addrCands))];
+ const row=document.querySelector(`.item[data-i="${i}"]`);if(!row)return;const it=items[i],h=row.querySelector('[data-hint]');
+ h.textContent='Locating address… this can take a few seconds';
+ const c=await locate(cands);if(!items[i]||it[k]!==txt)return;it['a'+k]=false;
+ if(c)it[k+'c']=c;else{const g=gazSearch(orig)[0],fb=g?[g.lat,g.lon]:sidoFB(orig);if(fb){it[k+'c']=fb;it['a'+k]=true}}
+ if(it.oc&&it.dc)return route(i,row);
+ h.textContent=it[k+'c']?(it['a'+k]?'Matched to the district center. Now set the other address.':'Now set the other address to calculate the distance.'):'Could not locate this address. Include the city and district (e.g. 서울 강남구), or enter the distance manually.'}
+/* ===== UI ===== */
+function rowHTML(it,i){
+ const m=CFG.method[it.method],opt=(o,v)=>Object.entries(o).map(([k,x])=>`<option value="${k}"${k===v?' selected':''}>${Array.isArray(x)?x[0]:x.n}</option>`).join('');
+ const cats=Object.keys(CFG.cat).map(c=>`<option${c===it.cat?' selected':''}>${c}</option>`).join('');
+ const bun=it.ship==='bundle';
+ const ship=m.on?`<label>Shipping<select data-k="ship"><option value="single"${!bun?' selected':''}>Individual</option><option value="bundle"${bun?' selected':''}>Bundled</option></select></label>
+  <label>Items per box<input type="number" min="1" data-k="b" value="${bun?it.b:1}" ${bun?'':'disabled'}></label>
+  <div class="mnote w6">Delivered by truck, so travel mode does not apply. Choose a store, used, rental, or stock method to pick how you travel.</div>`
+  :`<div class="mode w6" role="radiogroup" aria-label="Travel mode"><span class="ml">How will you travel?</span><div class="seg">${Object.entries(CFG.mode).map(([k,x])=>`<label class="chip"><input type="radio" name="mode${i}" data-k="mode" value="${k}"${k===it.mode?' checked':''}><span>${x[0]}<small>${x[1]} kg/km</small></span></label>`).join('')}</div><label class="rt"><input type="checkbox" data-k="rt"${it.rt!==false?' checked':''}> Round trip</label></div><div class="cmp w6" data-cmp></div>`;
+ return `<div class="item" data-i="${i}"><div class="g">
+ <label class="w3">Item name<input data-k="name" value="${esc(it.name)}" placeholder="e.g. Set plywood"></label>
+ <label class="w3">Material<select data-k="cat">${cats}</select></label>
+ <label>Weight each (kg)<input type="number" min="0" step="0.1" data-k="w" value="${it.w}"></label>
+ <label>Quantity<input type="number" min="1" data-k="q" value="${it.q}"></label>
+ <label>Purchase method<select data-k="method">${opt(CFG.method,it.method)}</select></label>
+ ${ship}
+ <label class="w3">Origin (seller / warehouse)<div class="ac"><input data-k="o" autocomplete="off" value="${esc(it.o)}" placeholder="Type up to the neighborhood, e.g. 서울 강남구 역삼동"><ul class="sg" data-sg="o" hidden></ul></div><input data-k="od" autocomplete="off" value="${esc(it.od)}" placeholder="Detail (optional): building, floor, room"></label>
+ <label class="w3">Destination (set / workshop)<div class="ac"><input data-k="d" autocomplete="off" value="${esc(it.d)}" placeholder="Type up to the neighborhood, e.g. 서울 마포구 상암동"><ul class="sg" data-sg="d" hidden></ul></div><input data-k="dd" autocomplete="off" value="${esc(it.dd)}" placeholder="Detail (optional): building, floor, room"></label>
+ <label>Distance (km, one way)<input type="number" min="0" step="0.1" data-k="km" value="${it.km}"></label>
+ <label style="justify-content:flex-end"><a class="map" data-map target="_blank" rel="noopener">Open in Google Maps</a></label>
+ <div class="hint" data-hint>${esc(it.hint)}</div>
+ </div><div class="row"><span class="mini" data-out></span><button class="del" data-del>Remove</button></div></div>`}
+function qRowHTML(q,i){
+ const cats=Object.keys(CFG.cat).map(c=>`<option${c===q.cat?' selected':''}>${c}</option>`).join('');
+ return `<div class="item qitem" data-i="${i}"><div class="g">
+ <label>Quote line<input data-q="name" value="${esc(q.name)}" placeholder="e.g. Set construction"></label>
+ <label>Material<select data-q="cat">${cats}</select></label>
+ <label>Amount (KRW)<input type="number" min="0" step="10000" data-q="amt" value="${q.amt||''}" placeholder="0"></label>
+ </div><div class="row"><span class="mini" data-qout></span><button class="del" data-qdel>Remove</button></div></div>`}
+function renderQuote(){$('#qitems').innerHTML=quote.length?quote.map(qRowHTML).join(''):'<div class="empty">No quote lines yet. Add one to set your baseline.</div>'}
+function render(){
+ renderQuote();
+ $('#items').innerHTML=items.length?items.map(rowHTML).join(''):'<div class="empty">No items yet. Add one to start calculating.</div>';
+ items.forEach((_,i)=>mapLink(i));update()}
+function mapLink(i){const it=items[i],a=document.querySelector(`.item[data-i="${i}"] [data-map]`);if(!a)return;
+ a.href='https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(it.o)+'&destination='+encodeURIComponent(it.d)}
+function update(){
+ let T=0,B=0,P=0,R=0,W=0,D=0;const rows=[];
+ items.forEach((it,i)=>{const c=calc(it),b=base(it);T+=c.t;B+=b.t;P+=c.prod;R+=c.tr;W+=c.water;D+=c.dist;rows.push([it,c]);
+  const el=document.querySelector(`.item[data-i="${i}"] [data-out]`);
+  const cmEl=document.querySelector(`.item[data-i="${i}"] [data-cmp]`);if(cmEl)cmEl.innerHTML=cmpHTML(it);
+  if(el){const on=CFG.method[it.method].on;el.innerHTML=`<b>${f1(c.t)} kg</b> (production ${f1(c.prod)} + transport ${f1(c.tr)})<br>`+(it.km>0?`Distance ${f1(it.km)} km${on?' (delivery)':(it.rt===false?' one way':' × 2 (round trip)')+' by '+CFG.mode[it.mode][0].toLowerCase()} → <b>${f1(c.dist)} kg CO₂e</b> from distance`:'Set origin and destination to add distance emissions')}});
+ $('#total').textContent=f1(T);$('#base').textContent=f1(B)+' kg';$('#prod').textContent=f1(P)+' kg';$('#trans').textContent=f1(R)+' kg';$('#dist').textContent=f1(D)+' kg';
+ const Q=quote.reduce((a,q)=>a+qBase(q),0),QA=quote.reduce((a,q)=>a+q.amt,0),Lim=Q*(1-target/100),has=Q>0;
+ $('#qamt').textContent=won(QA);$('#qbase').textContent=f1(Q)+' kg';
+ quote.forEach((q,i)=>{const el=document.querySelector(`.qitem[data-i="${i}"] [data-qout]`);if(el)el.innerHTML=`<b>${f1(qBase(q))} kg</b> baseline`});
+ ['gauge','qrow'].forEach(id=>$('#'+id).hidden=!has);$('#lrow').hidden=!(has&&target>0);
+ if(has){const sc=Math.max(T,Lim,0.01)*1.05;$('#gfill').style.width=Math.min(100,T/sc*100)+'%';$('#gmark').style.left=(Lim/sc*100)+'%';$('#gb').classList.toggle('over',T>Lim);
+  $('#glim').textContent=(target>0?'Limit ':'Baseline ')+f1(Lim)+' kg';$('#qb').textContent=f1(Q)+' kg';$('#lim').textContent=f1(Lim)+' kg'}
+ const L=has?(T>Lim?['high',`Over the ${target>0?'limit':'baseline'} by ${f1(T-Lim)} kg (${f1((T-Lim)/Lim*100)}%). Follow the plan below to get back under.`]:['low',`Within the ${target>0?'limit':'baseline'} with ${f1(Lim-T)} kg to spare.`]):T>=CFG.high?['high','High emissions. Check the alternatives below.']:T>=CFG.mid?['mid','Moderate emissions. See if any items can be reduced.']:['low','Low emissions.'];
+ $('#lvl').className='lvl '+L[0];$('#lvl').textContent=L[1];
+ const S=Math.max(0,B-T),meals=S/CFG.meal;
+ $('#save').innerHTML=`<h3>Saved by your sourcing choices</h3><ul>
+ <li><b>${f1(S)} kg</b> of carbon avoided${B>0?` (${f1(S/B*100)}%)`:''}</li>
+ <li>About <b>${f1(meals)} meals</b> of carbon footprint, or <b>${f1(meals/3)} people</b> eating three meals a day for a day</li>
+ <li><b>${Math.round(W).toLocaleString('en-US')} L</b> of water footprint avoided, enough drinking water for <b>${Math.round(W/CFG.drink).toLocaleString('en-US')} people</b> for a day</li>
+ <li>The yearly CO₂ absorption of <b>${f1(S/CFG.tree)} trees</b></li></ul>`;
+ suggest(rows,T,has?Lim:0)}
+function suggest(rows,T,L){
+ const out=[];
+ rows.forEach(([it,c])=>{let best=null;
+  Object.keys(CFG.method).forEach(k=>{const m=CFG.method[k];
+   if(NOREUSE.includes(it.cat)&&['danggeun','rental','reuse'].includes(k))return;
+   (m.on?[it.mode]:okModes(it)).forEach(md=>{
+    if(k===it.method&&!(m.on&&it.ship==='single')&&md===it.mode)return;
+    const ov=m.on?{method:k,ship:'bundle',b:it.q}:{method:k,mode:md},a=calc(it,ov);
+    if(!best||a.t<best.a.t)best={k,a,sh:m.on?'bundle':'',md:m.on?null:md}})});
+  if(best&&c.t-best.a.t>=0.3&&(c.t-best.a.t)/c.t>=0.1)out.push({it,c,best,d:c.t-best.a.t})});
+ out.sort((x,y)=>y.d-x.d);
+ const tot=out.reduce((s,x)=>s+x.d,0);
+ let h='';const over=L>0&&T>L,gap=T-L;let cum=0,reach=0;
+ if(over){out.forEach((x,n)=>{cum+=x.d;if(!reach&&T-cum<=L)reach=n+1});cum=0;
+  h+=`<h2>Get under the ${target>0?'limit':'baseline'}</h2><p class="mini">Your props total <b>${f1(T)} kg</b>, which is <b>${f1(gap)} kg</b> (${f1(gap/L*100)}%) over <b>${f1(L)} kg</b>. `+(reach?`Applying the first <b>${reach}</b> change${reach>1?'s':''} below brings you under it. Check stock, quality, and schedule before switching.`:out.length?`All sourcing changes below save <b>${f1(tot)} kg</b>, which is not enough on its own. See the next steps after the list.`:'Changing the purchase method will not close the gap on its own. See the next steps below.')+'</p>'}
+ else if(out.length){h+=`<h2>Ways to cut emissions</h2><p class="mini">Applying every alternative below could save another <b>${f1(tot)} kg</b> (${f1(tot/Math.max(T,0.01)*100)}%). Check stock, quality, and schedule before switching.</p>`}
+ out.forEach(x=>{cum+=x.d;const run=T-cum;
+  h+=`<div class="sug"><b>${esc(x.it.name||'Untitled item')}</b><br>${lab2(x.it.method,x.it.ship,x.it.mode)}: ${f1(x.c.t)} kg → <b>${lab2(x.best.k,x.best.sh,x.best.md)}</b>: ${f1(x.best.a.t)} kg <span class="d">−${f1(x.d)} kg</span>${over?`<span class="run${run<=L?' ok':''}">Running total: ${f1(run)} kg${run<=L?' (under the '+(target>0?'limit':'baseline')+')':''}</span>`:''}</div>`});
+ if(over&&!reach){const rem=gap-tot,top=rows.slice().sort((x,y)=>y[1].t-x[1].t).filter(r=>r[1].t>0).slice(0,3);
+  h+=`<h3 class="sub">Still ${f1(rem)} kg over after every switch. Reduce these next</h3>`;
+  top.forEach(([it,c])=>{const pct=rem/c.t*100;
+   h+=`<div class="top"><b>${esc(it.name||'Untitled item')}</b> <span class="mini">${it.cat}, ${f1(c.t/T*100)}% of your total</span><p>${TIPS[it.cat]||TIPS.Other}</p><p class="mini">${pct<100?`Trimming about <b>${f1(pct)}%</b> of this item (fewer units, less weight, or a lighter material) would close the remaining gap on its own.`:'No single item can close the gap. Spread cuts across several items.'}</p></div>`})}
+ h+=`<div class="sec tips"><h2>How to reduce carbon</h2><ul>
+ <li><b>Reuse first.</b> Reusing stock, scrap, or rental props cuts nearly all production emissions, which are the largest share for most items.</li>
+ <li><b>Buy used (Danggeun).</b> Used furniture, fabric, and fixtures avoid new production. Pick up in one trip.</li>
+ <li><b>Bundle online orders.</b> On Coupang and Naver, combine items into fewer boxes instead of shipping each one separately.</li>
+ <li><b>Cut trips and distance.</b> Combine store pickups, source close to the set, and use public transit or a shared van instead of a car.</li>
+ <li><b>Choose lower-carbon materials.</b> Fabric and electronics have the highest footprint per kg. Wood, paper, and glass are much lower.</li>
+ <li><b>Buy only what you need.</b> Rent for one-day items, avoid spares, and plan quantities with the shooting schedule.</li>
+ <li><b>Plan the afterlife.</b> After wrap, store or donate props and scrap so the next production can reuse them.</li></ul></div>`;
+ $('#sugwrap').innerHTML=h}
+/* ===== Events ===== */
+$('#items').addEventListener('input',e=>{
+ const t=e.target,k=t.dataset.k,row=t.closest('.item');if(!k)return;const i=+row.dataset.i,it=items[i];
+ it[k]=t.type==='number'?(parseFloat(t.value)||0):t.type==='checkbox'?t.checked:t.value;
+ if(k==='o'||k==='d'){it[k+'c']=null;it['a'+k]=false;mapLink(i);search(i,k,row);return}
+ if(k==='km')it.hint='Entered manually';
+ if(k==='q'&&it.ship==='bundle'&&!it.b)it.b=it.q;
+ update()});
+$('#items').addEventListener('change',e=>{const k=e.target.dataset.k;
+ if(k==='o'||k==='d'){const row=e.target.closest('.item'),i=+row.dataset.i,it=items[i],v=it[k].trim();
+  setTimeout(()=>{const ul=row.querySelector(`[data-sg="${k}"]`);if(ul)ul.hidden=true;if(items[i]&&items[i][k].trim().length>=2&&!items[i][k+'c'])geocode(i,k,[items[i][k].trim()])},250);return}
+ if(k==='method'||k==='ship'){const it=items[+e.target.closest('.item').dataset.i];if(k==='ship'&&it.ship==='bundle'&&it.b<2)it.b=it.q;render()}});
+function pick(li){
+ const ul=li.parentNode,k=ul.dataset.sg,row=li.closest('.item'),i=+row.dataset.i,it=items[i];if(!it||ul.hidden)return;
+ it['a'+k]=false;if(li.dataset.raw){it[k]=ul._q;it[k+'c']=null}
+ else{const p=ul._r[+li.dataset.n];it[k]=p.label;it[k+'c']=[p.lat,p.lon];it['a'+k]=!!p.approx}
+ row.querySelector(`[data-k="${k}"]`).value=it[k];ul.hidden=true;mapLink(i);
+ if(it[k+'c']){if(it.oc&&it.dc)route(i,row);else row.querySelector('[data-hint]').textContent='Address applied. Now set the other address.'}
+ else geocode(i,k,[it[k]])}
+$('#items').addEventListener('mousedown',e=>{const li=e.target.closest('.sg li[data-n],.sg li[data-raw]');if(!li)return;e.preventDefault();pick(li)});
+$('#items').addEventListener('touchend',e=>{const li=e.target.closest('.sg li[data-n],.sg li[data-raw]');if(!li)return;e.preventDefault();pick(li)});
+$('#items').addEventListener('click',e=>{
+ const cm=e.target.closest('[data-cm]');if(cm){items[+cm.closest('.item').dataset.i].mode=cm.dataset.cm;render();return}
+ if(e.target.dataset.del!==undefined){items.splice(+e.target.closest('.item').dataset.i,1);render()}});
+document.addEventListener('click',e=>{if(!e.target.closest('.sg')&&!e.target.matches('[data-k=o],[data-k=d]'))document.querySelectorAll('.sg').forEach(u=>u.hidden=true)});
+$('#ksave').onclick=()=>{try{localStorage.setItem(KEYNAME,$('#kkey').value.trim())}catch(e){}location.reload()};
+$('#kclear').onclick=()=>{try{localStorage.removeItem(KEYNAME)}catch(e){}$('#kkey').value='';location.reload()};
+$('#qitems').addEventListener('input',e=>{const k=e.target.dataset.q;if(!k)return;const i=+e.target.closest('.qitem').dataset.i;
+ quote[i][k]=k==='amt'?(parseFloat(e.target.value)||0):e.target.value;update()});
+$('#qitems').addEventListener('click',e=>{if(e.target.dataset.qdel!==undefined){quote.splice(+e.target.closest('.qitem').dataset.i,1);renderQuote();update()}});
+$('#qadd').onclick=()=>{quote.push(newQ());renderQuote();update()};
+$('#tgt').addEventListener('input',e=>{target=Math.min(90,Math.max(0,parseFloat(e.target.value)||0));update()});
+$('#add').onclick=()=>{items.push(newItem());render()};
+loadKakao();
+render();
+if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
